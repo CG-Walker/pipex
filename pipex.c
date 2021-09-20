@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walker <walker@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/16 17:40:07 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/20 22:25:40 by walker           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_double_ptr(char **str)
 	size_t	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		free(str[i]);
 		str[i] = NULL;
@@ -38,9 +38,7 @@ void	execve_for_path(char **cmd, char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
 			path = (env[i] + 5);
-		}
 		i++;
 	}
 	paths = ft_split(path, ':');
@@ -54,6 +52,7 @@ void	execve_for_path(char **cmd, char **env)
 		execve(tmp, cmd, env);
 		i++;
 	}
+	free(tmp);
 	free_double_ptr(paths);
 }
 
@@ -86,13 +85,13 @@ void	child_process(int in, int parent, char **argv, char **env)
 void	pipex(int in, int out, char **argv, char **env)
 {
 	int		pip[2];
-	pid_t	parent;
+	pid_t	id;
 
 	pipe(pip);
-	parent = fork();
-	if (parent < 0)
+	id = fork();
+	if (id < 0)
 		return (perror("Fork: "));
-	if (parent == 0)
+	if (id == 0)
 	{
 		close(pip[0]);
 		child_process(in, pip[1], argv, env);
@@ -100,7 +99,7 @@ void	pipex(int in, int out, char **argv, char **env)
 	else
 	{
 		close(pip[1]);
-		waitpid(parent, NULL, 0);
+		waitpid(id, NULL, 0);
 		parent_process(out, pip[0], argv, env);
 	}
 }
