@@ -38,7 +38,7 @@ void	execve_for_path(char **cmd, char **env)
 	}
 	if (ret < 0)
 	{
-		write(2, "pipex: command not found\n", 25);
+		write(2, "pipex: command not found\n", 25); // Pas sûr d'y avoir droit.
 		exit(128);
 	}
 	free(tmp);
@@ -85,6 +85,7 @@ void	pipex(int in, int out, char **argv, char **env)
 {
 	int		pip[2];
 	pid_t	id;
+	pid_t	id_2;
 
 	pipe(pip);
 	id = fork();
@@ -97,9 +98,15 @@ void	pipex(int in, int out, char **argv, char **env)
 	}
 	else
 	{
-		close(pip[1]);
-		waitpid(id, NULL, 0);
-		parent_process(out, pip[0], argv, env);
+		id_2 = fork();
+		if (id_2 < 0)
+			return (perror("pipex"));
+		if (id_2 == 0)
+		{
+			close(pip[1]);
+			waitpid(id, NULL, 0);
+			parent_process(out, pip[0], argv, env);
+		}
 	}
 }
 
