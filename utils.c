@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:17:16 by cgoncalv          #+#    #+#             */
-/*   Updated: 2021/09/30 14:48:26 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 15:15:31 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ char	*get_path(char **env)
 		}
 		i++;
 	}
-	if (path == NULL)
-		perror("pipex");
+	if (!path)
+	{
+		write(2, "pipex: command not found\n", 25);
+		exit(-1);
+	}
 	return (path);
 }

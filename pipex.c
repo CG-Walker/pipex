@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/30 14:50:21 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 15:12:11 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execve_for_path(char **cmd, char **env)
 	}
 	free(tmp);
 	free_double_ptr(paths);
-	perror("pipex");
+	write(2, "pipex: command not found\n", 25);
 }
 
 void	parent_process(int out, int child, char **argv, char **env)
