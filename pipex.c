@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/27 19:20:12 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 13:59:27 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	execve_for_path(char **cmd, char **env)
 	char	**paths;
 	char	*tmp;
 	size_t	i;
-	int		ret;
 
 	i = 0;
 	tmp = NULL;
@@ -33,16 +32,13 @@ void	execve_for_path(char **cmd, char **env)
 			tmp = ft_strjoin(paths[i], "/");
 			tmp = ft_stradd(tmp, cmd[0]);
 		}
-		ret = execve(tmp, cmd, env);
+		execve(tmp, cmd, env);
 		i++;
 	}
-	if (ret < 0)
-	{
-		write(2, "pipex: command not found\n", 25); // Pas sûr d'y avoir droit.
-		exit(128);
-	}
+	write(2, "pipex: command not found :", 25);
 	free(tmp);
 	free_double_ptr(paths);
+	exit(128);
 }
 
 void	parent_process(int out, int child, char **argv, char **env)
@@ -51,7 +47,7 @@ void	parent_process(int out, int child, char **argv, char **env)
 
 	if (ft_strlen(argv[3]) == 0)
 	{
-		usage();
+		exit(-1);
 		return ;
 	}
 	cmd = ft_split(argv[3], ' ');
@@ -70,7 +66,7 @@ void	child_process(int in, int parent, char **argv, char **env)
 	if (ft_strlen(argv[2]) == 0)
 	{
 		usage();
-		return ;
+		exit(-1);
 	}	
 	cmd = ft_split(argv[2], ' ');
 	dup2(parent, STDOUT_FILENO);
