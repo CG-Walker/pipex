@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/30 14:10:04 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:18:49 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,6 @@ void	parent_process(int out, int child, char **argv, char **env)
 {
 	char	**cmd;
 
-	if (ft_strlen(argv[3]) == 0)
-	{
-		usage();
-		exit(-1);
-	}
 	cmd = ft_split(argv[3], ' ');
 	dup2(child, STDIN_FILENO);
 	close(child);
@@ -63,11 +58,6 @@ void	child_process(int in, int parent, char **argv, char **env)
 {
 	char	**cmd;
 
-	if (ft_strlen(argv[2]) == 0)
-	{
-		usage();
-		exit(-1);
-	}	
 	cmd = ft_split(argv[2], ' ');
 	dup2(parent, STDOUT_FILENO);
 	close(parent);
@@ -111,7 +101,7 @@ int	main(int argc, char *argv[], char *env[])
 	int		fd1;
 	int		fd2;
 
-	if (argc != 5)
+	if (argc != 5 || !ft_strlen(argv[2]) || !ft_strlen(argv[3]))
 	{
 		usage();
 		exit(-1);
