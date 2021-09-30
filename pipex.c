@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/30 14:18:49 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:50:21 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	execve_for_path(char **cmd, char **env)
 	char	*tmp;
 	size_t	i;
 
-	i = 0;
+	i = -1;
 	tmp = NULL;
 	path = get_path(env);
 	if (!path)
 		return ;
 	paths = ft_split(path, ':');
-	while (paths[i])
+	while (paths[++i])
 	{
 		if (cmd[0][0] != '/')
 		{
@@ -33,12 +33,12 @@ void	execve_for_path(char **cmd, char **env)
 			tmp = ft_stradd(tmp, cmd[0]);
 		}
 		execve(tmp, cmd, env);
-		i++;
+		free(tmp);
+		tmp = NULL;
 	}
-	write(2, "pipex: command not found :", 25);
 	free(tmp);
 	free_double_ptr(paths);
-	exit(128);
+	perror("pipex");
 }
 
 void	parent_process(int out, int child, char **argv, char **env)
