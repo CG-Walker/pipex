@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:16:00 by walker            #+#    #+#             */
-/*   Updated: 2021/09/30 13:59:27 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:10:04 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	parent_process(int out, int child, char **argv, char **env)
 
 	if (ft_strlen(argv[3]) == 0)
 	{
+		usage();
 		exit(-1);
-		return ;
 	}
 	cmd = ft_split(argv[3], ' ');
 	dup2(child, STDIN_FILENO);
